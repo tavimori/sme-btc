@@ -7,8 +7,11 @@ from collections import OrderedDict
 import sys
 
 chain = blocksci.Blockchain("/mnt/licheng-sme/bitcoin-data")
-cm = blocksci.cluster.ClusterManager.create_clustering("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain, should_overwrite=True)
-# cm = blocksci.cluster.ClusterManager("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain)
+
+# use this for the first time to create a new clustering
+# cm = blocksci.cluster.ClusterManager.create_clustering("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain, should_overwrite=True)
+# use this if clustering has already been done once (and no modification is made)
+cm = blocksci.cluster.ClusterManager("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain)
 
 
 user_dict = dict()
@@ -94,7 +97,7 @@ with open("clustering_output.csv", "w") as clustering_output_file:
     csv_writer.writeheader()
 
     with open("tx_output.csv", "w") as tx_output_file:
-        header = ["date", "uid", "tid", "action"]
+        header = ["date", "uid", "tid", "action", "is_mining"]
         tx_writer = csv.DictWriter(tx_output_file, fieldnames=header)
         tx_writer.writeheader()
 
@@ -167,10 +170,15 @@ with open("clustering_output.csv", "w") as clustering_output_file:
 
             # write transactions
             for tx_in in clu.ins():
-                tx_writer.writerow({"date": tx_in.tx.block_time, "uid": uid, "tid": tx_in.tx.hash, "action": tx_in.value/1e8})
+                tx_writer.writerow({"date": tx_in.tx.block.time, "uid": uid, "tid": tx_in.tx.hash, "action": tx_in.value/1e8, "is_mining": 0})
 
             for tx_out in clu.outs():
-                tx_writer.writerow({"date": tx_out.tx.block_time, "uid": uid, "tid": tx_out.tx.hash, "action": -tx_out.value/1e8})
+                # tx_writer.writerow({"date": tx_out.tx.block.time, "uid": uid, "tid": tx_out.tx.hash, "action": -tx_out.value/1e8})
+                if int(tx_out.tx.input_value) == 0:
+                    tx_writer.writerow({"date": tx_out.block.time, "uid": uid, "tid": tx_out.tx.hash, "action": -tx_out.value/1e8, "is_mining": 1})
+                else:
+                    tx_writer.writerow({"date": tx_out.block.time, "uid": uid, "tid": tx_out.tx.hash, "action": -tx_out.value/1e8, "is_mining": 0})
+
 
             for clu_addr in clu_addrs:
                 addr_count += 1

@@ -62,4 +62,8 @@ The output files on July.25th, 2019 could be downloaded from [here](https://www.
 1. Among all 6564 proceed users, only 1591 will result in valid clustering result, we may need to loosen the criteria or double check the addresses to have better result.
 2. We may double check the cluster criteria provided by Blocksci.
 
+#### Known Issues
+
+* `TX time 1970-01-01 01:00:00`: We used `tx.block_time` to fetch the time of tx, which result in a lot of `1970-01-01` record. This is a bug of blocksci [#170](https://github.com/citp/BlockSci/issues/170). We fixed it by use `tx.block.time`
+
 
