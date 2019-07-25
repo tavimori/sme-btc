@@ -7,8 +7,8 @@ from collections import OrderedDict
 import sys
 
 chain = blocksci.Blockchain("/mnt/licheng-sme/bitcoin-data")
-# cm = blocksci.cluster.ClusterManager.create_clustering("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain)
-cm = blocksci.cluster.ClusterManager("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain)
+cm = blocksci.cluster.ClusterManager.create_clustering("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain, should_overwrite=True)
+# cm = blocksci.cluster.ClusterManager("/mnt/licheng-sme/bitcoin-data/clusters-jul6", chain)
 
 
 user_dict = dict()

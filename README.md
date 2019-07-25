@@ -19,7 +19,13 @@ We use blocksci v0.50 for this project. Blocksci provides with two environments:
 
 Please choose either and setup blocksci accordingly. (We chose the second and set up blocksci on a local high-performance server on July 2019)
 
-### Doing Clustering and Retriving the transactions
+> Please be noted that the path to the chain data and blocksci data may differ on different platforms, one should modify the scipts to point these files correctly.
+
+### Doing Clustering 
+
+Blocksci has built-in support for address clustering, one only need to prepare the "**heuristics**" for clustering. Please refer to the original [docs](https://citp.github.io/BlockSci/reference/clustering/clustering.html) on clustering. We used default clustering heuristics in this project.
+
+### Apply Clusters and Retriving the transactions
 
 The script `analyze-sme-btc.py` is used to first clustering the user address and then retrive the address. 
 The script will first read in `All_user_info_speculation_merged_all.csv` and store all the user and their given bitcoin addresses in an ordered dict. The next step is to cluster their address to acquire all the addresses belonging to the same user. Once the clustering is done, we retrive all the transactions conducted by that "cluster", aka the user.
@@ -52,4 +58,8 @@ The output files on July.25th, 2019 could be downloaded from [here](https://www.
 
 
 #### Potential Problems
+
+1. Among all 6564 proceed users, only 1591 will result in valid clustering result, we may need to loosen the criteria or double check the addresses to have better result.
+2. We may double check the cluster criteria provided by Blocksci.
+
 
