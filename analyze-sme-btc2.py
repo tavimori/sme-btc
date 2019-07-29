@@ -139,6 +139,7 @@ with open("clustering_output.csv", "w") as clustering_output_file:
 
             # sometimes the clustering result may contains extremely many addresses (perhaps they belongs to an exchange centor)
             # we filter out such "exchange centor addr" here
+            user_addr_count = 0
             for i,addr in enumerate(clu_addrs):
                 # print("\t\t{}: \t type: {}".format(i, addr.type))
 
@@ -150,6 +151,16 @@ with open("clustering_output.csv", "w") as clustering_output_file:
                     csv_writer.writerow({"id": count, "uid": uid, "addr": addr_str, "is_original": 1, "is_valid": 1, "comments": "this addr causes bug when clustering (non-standard) endless clustering"})
                     endless_cluster_user_count += 1
                     break
+
+                # user_addr_count += 1
+                # if user_addr_count > 10000:
+                #     check = False
+                #     reason = "too large clustering result address"
+                #     csv_writer.writerow({"id": count, "uid": uid, "addr": addr_str, "is_original": 1, "is_valid": 1, "comments": "this addr may result in endless clustering"})
+                #     endless_cluster_user_count += 1
+                #     break
+
+
 
             if not check: 
                 print("check fail".format(uid))
